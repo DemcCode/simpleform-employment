@@ -1,0 +1,137 @@
+<mvc:View
+    controllerName="projectsimpleform.projectsimpleform.controller.App"
+    xmlns="sap.m"   
+    xmlns:core="sap.ui.core" 
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:f="sap.ui.layout.form"
+    displayBlock="true"    
+>
+	<Shell id="shell">
+		<App id="app">
+			<pages>
+				<Page id="page" title="{i18n>title}">
+					<content>
+
+                        <VBox id="formContainerPersonal" class="sapUiSmallMargin" items="{ path : '/forms' }">
+                            <f:SimpleForm id="simpleFormPersonal"
+                                          editable="true"
+                                          layout="ColumnLayout"
+                                          columnsM="2"
+                                          columnsL="2"
+                                          columnsXL="2">    
+                                <f:content>
+
+                                    <core:Title text="Information"/>
+
+                                        <Label text="Name"/>
+                                        <Input required="true" change="onChange" value="{ path : 'name',
+                                                                                          type :  'sap.ui.model.type.String'}"/>
+
+                                        <Label text="Street/No."/>
+                                        <Input  value="{street/name}"/>                                        
+                                        <Input  value="{street/number}">
+                                            <layoutData>
+                                                <f:ColumnElementData cellsSmall="3" cellsLarge="2"/>
+                                            </layoutData>
+                                        </Input>
+
+                                        <Label text="ZIP Code/City"/>
+                                        <Input value="{ path : 'zip/code',
+                                                        type : 'sap.ui.model.type.Integer'}">
+                                            <layoutData>
+                                                <f:ColumnElementData cellsSmall="3" cellsLarge="2"/>
+                                            </layoutData>                                        
+                                        </Input>
+
+                                        <Input value="{zip/city}"/>
+
+                                        <Select id="country" selectedKey="{country}">
+                                            <items>
+                                                <core:Item text="Colombia" key="CL"/>
+                                                <core:Item text="Estados Unidos" key="EEUU"/>
+                                                <core:Item text="Chile" key="CH"/>
+                                            </items>
+                                        </Select>
+                                            
+
+                                    <core:Title text="Contact"/>
+
+                                        <Label text="Email"/>
+                                        <Input required="true" change="onChange" value="{ path : 'email',
+                                                                                          type :  'sap.ui.model.type.String',
+                                                                                          constraints : { 
+                                                                                              search : '^\\w+[\\-+\\.]*\\@[a-zA-Z]+.[a-zA-Z]+'
+
+                                                                                          } }"/>
+
+                                        <Label text="Phone Number"/>
+                                        <Input  value="{phone/number}"/>
+                                        <Input  value="{phone/time}">
+                                            <layoutData>
+                                                <f:ColumnElementData cellsSmall="2" cellsLarge="2"/>
+                                            </layoutData>                                        
+                                        </Input>
+
+                                        <Label text="Personal website"/>
+                                        <Input  value="{website}"/> 
+
+                                </f:content>                        
+                            </f:SimpleForm>   
+                        </VBox>
+
+                        <VBox id="formContainerEmployment" class="sapUiSmallMargin" items="{/employment}">
+                            <f:SimpleForm id="simpleFormEmployment"
+                                          editable="true"
+                                          layout="ColumnLayout"
+                                          columnsM="2"
+                                          columnsL="2"
+                                          columnsXL="2">   
+                                <f:content>
+                                    <core:Title text="Position"/>
+
+                                        <Label text="Job Classification"/>
+                                        <Input  value="{jobTitle}"/>
+
+                                        <Label text="Pay Grade"/>
+                                        <Input  value="{payGrade}"/>
+
+                                        <Label text="Unit"/>
+                                        <Input  value="{unit}"/>
+
+                                    <core:Title text="Rating"/>
+
+                                        <Label text="Employee Class"/>
+                                        <Input  value="{class}"/>
+
+                                        <Label text="FTE"/>
+                                        <Input  value="{fte}"/>
+
+                                        <Label text="Stadard Weekly Hours"/>
+                                        <Input change="onChange" value="{ path : 'weeklyHours',
+                                                                          type : 'sap.ui.model.type.String',
+                                                                          constraints : {
+                                                                              maximum : 40
+                                                                          }
+                                                                        }"/>
+
+                                </f:content>                                                 
+                            </f:SimpleForm>   
+                        </VBox>
+                    </content>
+                    <footer>
+                        <OverflowToolbar>
+                            <Button id="messagePopover"
+                                    visible="true"
+                                    text="message"
+                                    press=".handleMessagesPopover"/>
+                            <ToolbarSpacer/>
+                            <Button text="Save" press="saveData"
+                                    type="Emphasized"/>
+                            <Button text="Cancel"/>
+                        </OverflowToolbar>   
+                    </footer>   
+				</Page>
+			</pages>
+		</App>
+	</Shell>
+</mvc:View>

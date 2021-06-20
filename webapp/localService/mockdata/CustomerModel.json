@@ -1,0 +1,32 @@
+{
+    "forms": [
+        {
+            "name": "Julie Armstrong",
+            "street": {
+                "name": "Mainstreet",
+                "number": 1278
+            },
+            "zip": {
+                "code": 12345,
+                "city": "Boston"
+            },
+            "country": "US",
+            "email": "JulieArmstronglogaligroup.com",
+            "phone": {
+                "number": "+1 (610) 661-1000",
+                "time": "12:00"
+            },
+            "website": "www.logaligroup.com"
+        }
+    ],
+    "employment": [
+        {
+            "jobTitle": "Senior UI Developer (UIDEV-SR)",
+            "payGrade": "Salary Grade 65 (GR-14)",
+            "unit": "USD",
+            "class": "Employee",
+            "fte": 1,
+            "weeklyHours": 40
+        }
+    ]
+}
