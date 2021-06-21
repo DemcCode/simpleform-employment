@@ -61,7 +61,6 @@
                                                                                           type :  'sap.ui.model.type.String',
                                                                                           constraints : { 
                                                                                               search : '^\\w+[\\-+\\.]*\\@[a-zA-Z]+.[a-zA-Z]+'
-
                                                                                           } }"/>
 
                                         <Label text="Phone Number"/>
@@ -121,12 +120,13 @@
                     <footer>
                         <OverflowToolbar>
                             <Button id="messagePopover"
-                                    visible="true"
-                                    text="message"
+                                    visible="false"
+                                    icon="{ path: '/', formatter: '.mpIconFormatter'}"
+                                    type="{ path: '/', formatter: '.mpTypeFormatter'}"
+                                    text="{ path: '/', formatter: '.mpSeverityMessages'}"                                    
                                     press=".handleMessagesPopover"/>
                             <ToolbarSpacer/>
-                            <Button text="Save" press="saveData"
-                                    type="Emphasized"/>
+                            <Button text="Save" press="saveData" type="Emphasized"/>
                             <Button text="Cancel"/>
                         </OverflowToolbar>   
                     </footer>   
