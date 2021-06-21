@@ -9,7 +9,7 @@
 	<Shell id="shell">
 		<App id="app">
 			<pages>
-				<Page id="page" title="{i18n>title}">
+				<Page id="employeePage" title="{i18n>title}">
 					<content>
 
                         <VBox id="formContainerPersonal" class="sapUiSmallMargin" items="{ path : '/forms' }">
@@ -107,7 +107,7 @@
 
                                         <Label text="Stadard Weekly Hours"/>
                                         <Input change="onChange" value="{ path : 'weeklyHours',
-                                                                          type : 'sap.ui.model.type.String',
+                                                                          type : 'sap.ui.model.type.Integer',
                                                                           constraints : {
                                                                               maximum : 40
                                                                           }

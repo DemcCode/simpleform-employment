@@ -7,7 +7,8 @@ sap.ui.define([
     'sap/ui/core/Element',
     'sap/m/MessageItem',
     'sap/ui/core/library',
-    'sap/ui/core/message/Message'
+    'sap/ui/core/message/Message',
+    "sap/m/MessageBox"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
@@ -18,7 +19,7 @@ sap.ui.define([
      * @param {typeof sap.ui.core.library } library
      * @param {typeof sap.ui.core.message.Message } Message
     */
-    function (Controller, JSONModel, Core, MessagePopover, Element, MessageItem, library, Message) {
+    function (Controller, JSONModel, Core, MessagePopover, Element, MessageItem, library, Message, MessageBox) {
         "use strict";
 
         var MessageType = library.MessageType;
@@ -44,13 +45,10 @@ sap.ui.define([
                     activeTitlePress: function (oEvent) {
                         let oItem = oEvent.getParameter("item");
                         let oPage = that.getView().byId("employeePage");
-                        let oMessage =
-                            oItem.getBindingContext("message").getObject();
-                        let oControl =
-                            Element.registry.get(oMessage.getControlId());
+                        let oMessage = oItem.getBindingContext("message").getObject();
+                        let oControl = Element.registry.get(oMessage.getControlId());
                         if (oControl) {
-                            oPage.scrollToElement(oControl.getDomRef(), 200,
-                                [0, -100]);
+                            oPage.scrollToElement(oControl.getDomRef(), 200, [0, -100]);
                             setTimeout(function () {
                                 oControl.focus();
                             }, 300);
@@ -84,7 +82,6 @@ sap.ui.define([
             // specific for each use case
             getGroupName: function (sControlId) {
                 let oControl = Element.registry.get(sControlId);
-
                 if (oControl) {
                     let sFormSubtitle = oControl.getParent().getParent().getTitle().getText();
                     let sFormTitle = oControl.getParent().getParent().getParent().getTitle();
@@ -163,8 +160,7 @@ sap.ui.define([
                         sHighestSeverityMessageType = !sHighestSeverityMessageType ? "Information" : sHighestSeverityMessageType;
                         break;
                 }
-                return
-                this._MessageManager.getMessageModel().oData.reduce(function (iNumberofMessages,) {
+                return this._MessageManager.getMessageModel().oData.reduce(function (iNumberofMessages, oMessageItem) {
                     return oMessageItem.type === sHighestSeverityMessageType ? ++iNumberofMessages : iNumberofMessages;
                 }, 0) || "";
             },
@@ -177,8 +173,7 @@ sap.ui.define([
             },
 
             handleRequiredField: function (oInput) {
-                let sTarget = oInput.getBindingContext().getPath() + "/" +
-                    oInput.getBindingPath("value");
+                let sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
                 //logic to remove message from traget
                 this.removeMessageFromTarget(sTarget);
                 if (!oInput.getValue()) {
@@ -208,7 +203,7 @@ sap.ui.define([
                     message,
                     type,
                     description,
-                    sTarget = oInput.getBindingContext().getPath() + "/" +  oInput.getBindingPath("value");
+                    sTarget = oInput.getBindingContext().getPath() + "/" + oInput.getBindingPath("value");
                 this.removeMessageFromTarget(sTarget);
                 switch (group) {
                     case "GR1":
@@ -263,16 +258,33 @@ sap.ui.define([
                 this.handleRequiredField(oNameInput);
                 this.checkInputConstraints('GR1', oEmailInput);
                 this.checkInputConstraints('GR2', iWeeklyHours);
-                this.oMP.getBinding("items").attachChange(function (oEvent) {
-                    this.oMP.navigateBack();
-                    oButton.setType(this.mpTypeFormatter());
-                    oButton.setIcon(this.mpIconFormatter());
-                    oButton.setText(this.mpSeverityMessages());
-                }.bind(this));
-                setTimeout(function () {
-                    this.oMP.openBy(oButton);
-                }.bind(this), 100);
-            }
+                if (!this.oMP.getBinding("items").oList.length == 0) {
+                    this.oMP.getBinding("items").attachChange(function (oEvent) {
+                        this.oMP.navigateBack();
+                        oButton.setType(this.mpTypeFormatter());
+                        oButton.setIcon(this.mpIconFormatter());
+                        oButton.setText(this.mpSeverityMessages());
+                    }.bind(this));
+                    setTimeout(function () {
+                        this.oMP.openBy(oButton);
+                    }.bind(this), 100);
+                } else {
+                    MessageBox.show("Se ha enviado la información.", {
+                        icon: MessageBox.Icon.SUCCESS,
+                        title: "Succes",
+                        actions: [MessageBox.Action.OK],
+                        onClose: function () {
+                            var oHistory = History.getInstance();
+                            var sPreviousHash = oHistory.getPreviousHash();
 
+                            if (sPreviousHash !== undefined) {
+                                window.history.go(-1);
+                            } else {
+                                this.navTo("TargetMain");
+                            }
+                        }
+                    });
+                }
+            }
         });
     });
